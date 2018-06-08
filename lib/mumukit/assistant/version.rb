@@ -1,5 +1,5 @@
 module Mumukit
-  module Assistant
+  class Assistant
     VERSION = "0.1.0"
   end
 end
