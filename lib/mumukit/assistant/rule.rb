@@ -29,105 +29,14 @@ module Mumukit::Assistant::Rule
       else raise "Unsupported rule #{condition}"
     end
   end
-
-  class Base
-    attr_accessor :message
-    def initialize(message)
-      @message = message
-    end
-
-    def message_for(retries)
-      message.call(retries)
-    end
-  end
-
-  class ContentEmpty < Base
-    def matches?(submission)
-      submission.content.empty?
-    end
-  end
-
-  class SubmissionFailed < Base
-    def matches?(submission)
-      submission.status.failed?
-    end
-  end
-
-  class TheseTestsFailed < SubmissionFailed
-    def initialize(message, tests)
-      raise 'missing tests' if tests.blank?
-      super(message)
-      @tests = tests
-    end
-
-    def matches?(submission)
-      super && matches_failing_tests?(submission)
-    end
-
-    def matches_failing_tests?(submission)
-      @tests.all? do |it|
-        includes_failing_test? it, submission
-      end
-    end
-
-    def includes_failing_test?(title, submission)
-      failed_tests(submission).map { |it| it[:title] }.include?(title)
-    end
-
-    def failed_tests(submission)
-      submission.test_results.select { |it| it[:status].failed? }
-    end
-  end
-
-  class OnlyTheseTestsFailed < TheseTestsFailed
-    def matches_failing_tests?(submission)
-      super && failed_tests(submission).count == @tests.count
-    end
-  end
-
-  class SubmissionPassedWithWarnings < Base
-    def matches?(submission)
-      submission.status.passed_with_warnings?
-    end
-  end
-
-  class TheseExpectationsFailed < SubmissionPassedWithWarnings
-    def initialize(message, expectations)
-      raise 'missing expectations' if expectations.blank?
-      super(message)
-      @expectations = expectations
-    end
-
-    def matches?(submission)
-      super && matches_failing_expectations?(submission)
-    end
-
-    def matches_failing_expectations?(submission)
-      @expectations.all? do |it|
-        includes_failing_expectation? it, submission.expectation_results
-      end
-    end
-
-    def includes_failing_expectation?(humanized_expectation, expectation_results)
-      binding, inspection = humanized_expectation.split(' ')
-      expectation_results.include? binding: binding, inspection: inspection, result: :failed
-    end
-  end
-
-  class SubmissionErrored < Base
-    def matches?(submission)
-      submission.status.errored?
-    end
-  end
-
-  class ErrorContains < SubmissionErrored
-    def initialize(message, text)
-      super(message)
-      @text = text
-    end
-
-    def matches?(submission)
-      super && submission.result.include?(@text)
-    end
-  end
 end
+
+require_relative 'rule/base.rb'
+require_relative 'rule/content_empty.rb'
+require_relative 'rule/submission_failed.rb'
+require_relative 'rule/these_tests_failed.rb'
+require_relative 'rule/only_these_tests_failed.rb'
+require_relative 'rule/submission_passed_with_warnings.rb'
+require_relative 'rule/these_expectations_failed.rb'
+require_relative 'rule/submission_errored.rb'
+require_relative 'rule/error_contains.rb'
