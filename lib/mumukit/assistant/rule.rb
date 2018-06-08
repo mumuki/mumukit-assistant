@@ -10,7 +10,7 @@ module Mumukit::Assistant::Rule
   end
 
   def self.parse_simple_when(w, message)
-    case w
+    case w.to_sym
       when :content_empty                    then Mumukit::Assistant::Rule::ContentEmpty.new(message)
       when :submission_errored               then Mumukit::Assistant::Rule::SubmissionErrored.new(message)
       when :submission_failed                then Mumukit::Assistant::Rule::SubmissionFailed.new(message)
@@ -21,7 +21,7 @@ module Mumukit::Assistant::Rule
 
   def self.parse_complex_when(w, message)
     condition, value = *w
-    case condition
+    case condition.to_sym
       when :error_contains            then Mumukit::Assistant::Rule::ErrorContains.new(message, value)
       when :these_tests_failed        then Mumukit::Assistant::Rule::TheseTestsFailed.new(message, value)
       when :only_these_tests_failed   then Mumukit::Assistant::Rule::OnlyTheseTestsFailed.new(message, value)
