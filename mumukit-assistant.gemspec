@@ -6,8 +6,8 @@ require 'mumukit/assistant/version'
 Gem::Specification.new do |spec|
   spec.name          = 'mumukit-assistant'
   spec.version       = Mumukit::Assistant::VERSION
-  spec.authors       = ['Julián Berbel Alt']
-  spec.email         = ['julian@mumuki.org']
+  spec.authors       = ['Julián Berbel Alt', 'Franco Bulgarelli']
+  spec.email         = ['julian@mumuki.org', 'franco@mumuki.org']
   spec.summary       = 'Library for providing assistance with mumuki exercises'
   spec.homepage      = 'http://github.com/mumuki/mumukit-assistant'
   spec.license       = 'MIT'
