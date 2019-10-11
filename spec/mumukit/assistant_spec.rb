@@ -280,7 +280,7 @@ describe Mumukit::Assistant do
                 {binding: "Foo", inspection: "DeclaresAttribute:bar", result: :failed},
                 {binding: "foo", inspection: "DeclaresAttribute:baz", result: :passed}] }
 
-      it { expect(assistant.assist_with submission).to eq ['sdsad'] }
+      it { expect(assistant.assist_with submission).to eq ['You must declare getter bar'] }
     end
   end
 

@@ -4,5 +4,6 @@ class Mumukit::Assistant::Rule::OnlyTheseExpectationsFailed < Mumukit::Assistant
   end
 
   def failed_expectations(submission)
+    submission.expectation_results.select { |it| it[:result].failed? }
   end
 end
