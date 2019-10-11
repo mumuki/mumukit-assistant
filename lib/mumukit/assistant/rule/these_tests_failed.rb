@@ -20,6 +20,6 @@ class Mumukit::Assistant::Rule::TheseTestsFailed < Mumukit::Assistant::Rule::Sub
   end
 
   def failed_tests(submission)
-    submission.test_results.select { |it| it[:status].failed? }
+    @failed_tests ||= submission.test_results.select { |it| it[:status].failed? }
   end
 end
