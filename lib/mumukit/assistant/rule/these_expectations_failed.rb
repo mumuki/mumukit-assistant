@@ -1,12 +1,13 @@
 class Mumukit::Assistant::Rule::TheseExpectationsFailed < Mumukit::Assistant::Rule::SubmissionPassedWithWarnings
-  def initialize(message, expectations)
+  def initialize(message, expectations, strict: false)
     raise 'missing expectations' if expectations.blank?
     super(message)
     @expectations = expectations
+    @strict = strict
   end
 
   def matches?(submission)
-    super && matches_failing_expectations?(submission)
+    (!@strict || super) && matches_failing_expectations?(submission)
   end
 
   def matches_failing_expectations?(submission)

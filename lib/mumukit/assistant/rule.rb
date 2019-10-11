@@ -22,11 +22,13 @@ module Mumukit::Assistant::Rule
   def self.parse_complex_when(w, message)
     condition, value = *w
     case condition.to_sym
-      when :error_contains                 then Mumukit::Assistant::Rule::ErrorContains.new(message, value)
-      when :these_tests_failed             then Mumukit::Assistant::Rule::TheseTestsFailed.new(message, value)
-      when :only_these_tests_failed        then Mumukit::Assistant::Rule::OnlyTheseTestsFailed.new(message, value)
-      when :these_expectations_failed      then Mumukit::Assistant::Rule::TheseExpectationsFailed.new(message, value)
-      when :only_these_expectations_failed then Mumukit::Assistant::Rule::OnlyTheseExpectationsFailed.new(message, value)
+      when :error_contains                             then Mumukit::Assistant::Rule::ErrorContains.new(message, value)
+      when :these_tests_failed                         then Mumukit::Assistant::Rule::TheseTestsFailed.new(message, value)
+      when :only_these_tests_failed                    then Mumukit::Assistant::Rule::OnlyTheseTestsFailed.new(message, value)
+      when :these_expectations_failed                  then Mumukit::Assistant::Rule::TheseExpectationsFailed.new(message, value)
+      when :only_these_expectations_failed             then Mumukit::Assistant::Rule::OnlyTheseExpectationsFailed.new(message, value)
+      when :submission_passed_with_these_warnings      then Mumukit::Assistant::Rule::TheseExpectationsFailed.new(message, value, strict: true)
+      when :submission_passed_with_these_only_warnings then Mumukit::Assistant::Rule::OnlyTheseExpectationsFailed.new(message, value, strict: true)
       else raise "Unsupported rule #{condition}"
     end
   end
