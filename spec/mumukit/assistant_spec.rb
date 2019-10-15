@@ -205,6 +205,40 @@ describe Mumukit::Assistant do
     end
   end
 
+  describe 'submission_passed_with_warnings with strict expectations' do
+    let(:rules) {[{
+      when: {
+        submission_passed_with_these_warnings: [
+          'Foo DeclaresMethod:getBar',
+          'Foo DeclaresAttribute:bar'
+        ]
+      },
+      then: 'You must declare getter bar'
+    }]}
+
+    context 'when submission has failed with matching expectations' do
+      let(:submission) {
+        struct status: :failed,
+               expectation_results: [
+                 {binding: "Foo", inspection: "DeclaresMethod:getBar", result: :failed},
+                 {binding: "Foo", inspection: "DeclaresAttribute:bar",  result: :failed},
+                 {binding: "foo", inspection: "DeclaresAttribute:baz", result: :failed}] }
+
+      it { expect(assistant.assist_with submission).to eq [] }
+    end
+
+    context 'when submission has passed_with_warnings with matching expectations' do
+      let(:submission) {
+        struct status: :passed_with_warnings,
+               expectation_results: [
+                 {binding: "Foo", inspection: "DeclaresMethod:getBar", result: :failed},
+                 {binding: "Foo", inspection: "DeclaresAttribute:bar",  result: :failed},
+                 {binding: "foo", inspection: "DeclaresAttribute:baz", result: :failed}] }
+
+      it { expect(assistant.assist_with submission).to eq ['You must declare getter bar'] }
+    end
+  end
+
   describe 'submission_passed_with_warnings with expectations' do
     let(:rules) {[{
       when: {
@@ -227,6 +261,17 @@ describe Mumukit::Assistant do
       it { expect(assistant.assist_with submission).to eq ['You must declare getter bar'] }
     end
 
+    context 'when submission has failed with matching expectations' do
+      let(:submission) {
+        struct status: :failed,
+               expectation_results: [
+                 {binding: "Foo", inspection: "DeclaresMethod:getBar", result: :failed},
+                 {binding: "Foo", inspection: "DeclaresAttribute:bar",  result: :failed},
+                 {binding: "foo", inspection: "DeclaresAttribute:baz", result: :failed}] }
+
+      it { expect(assistant.assist_with submission).to eq ['You must declare getter bar'] }
+    end
+
     context 'when submission has passed_with_warnings without matching all expectations' do
       let(:submission) {
         struct status: :passed_with_warnings,
@@ -238,6 +283,63 @@ describe Mumukit::Assistant do
       it { expect(assistant.assist_with submission).to eq [] }
     end
   end
+
+  describe 'submission_passed_with_warnings with expectations only' do
+    let(:rules) {[{
+      when: {
+        only_these_expectations_failed: [
+          'Foo DeclaresMethod:getBar',
+          'Foo DeclaresAttribute:bar'
+        ]
+      },
+      then: 'You must declare getter bar'
+    }]}
+
+    context 'when submission has passed_with_warnings with matching expectations, plus some others' do
+      let(:submission) {
+        struct status: :passed_with_warnings,
+               expectation_results: [
+                 {binding: "Foo", inspection: "DeclaresMethod:getBar", result: :failed},
+                 {binding: "Foo", inspection: "DeclaresAttribute:bar", result: :failed},
+                 {binding: "foo", inspection: "DeclaresAttribute:baz", result: :failed}] }
+
+      it { expect(assistant.assist_with submission).to eq [] }
+    end
+
+    context 'when submission has passed_with_warnings without matching all expectations' do
+      let(:submission) {
+        struct status: :passed_with_warnings,
+               expectation_results: [
+                {binding: "Foo", inspection: "DeclaresMethod:getBar", result: :failed},
+                {binding: "Foo", inspection: "DeclaresAttribute:bar", result: :passed},
+                {binding: "foo", inspection: "DeclaresAttribute:baz", result: :failed}] }
+
+      it { expect(assistant.assist_with submission).to eq [] }
+    end
+
+    context 'when submission has passed_with_warnings with matching expectations only' do
+      let(:submission) {
+        struct status: :passed_with_warnings,
+               expectation_results: [
+                {binding: "Foo", inspection: "DeclaresMethod:getBar", result: :failed},
+                {binding: "Foo", inspection: "DeclaresAttribute:bar", result: :failed},
+                {binding: "foo", inspection: "DeclaresAttribute:baz", result: :passed}] }
+
+      it { expect(assistant.assist_with submission).to eq ['You must declare getter bar'] }
+    end
+
+    context 'when submission has failed with matching expectations only' do
+      let(:submission) {
+        struct status: :failed,
+               expectation_results: [
+                {binding: "Foo", inspection: "DeclaresMethod:getBar", result: :failed},
+                {binding: "Foo", inspection: "DeclaresAttribute:bar", result: :failed},
+                {binding: "foo", inspection: "DeclaresAttribute:baz", result: :passed}] }
+
+      it { expect(assistant.assist_with submission).to eq ['You must declare getter bar'] }
+    end
+  end
+
 
 end
 
