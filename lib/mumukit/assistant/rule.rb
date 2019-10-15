@@ -28,7 +28,7 @@ module Mumukit::Assistant::Rule
       when :these_expectations_failed                  then Mumukit::Assistant::Rule::TheseExpectationsFailed.new(message, value)
       when :only_these_expectations_failed             then Mumukit::Assistant::Rule::OnlyTheseExpectationsFailed.new(message, value)
       when :submission_passed_with_these_warnings      then Mumukit::Assistant::Rule::TheseExpectationsFailed.new(message, value, strict: true)
-      when :submission_passed_with_these_only_warnings then Mumukit::Assistant::Rule::OnlyTheseExpectationsFailed.new(message, value, strict: true)
+      when :submission_passed_with_only_these_warnings then Mumukit::Assistant::Rule::OnlyTheseExpectationsFailed.new(message, value, strict: true)
       else raise "Unsupported rule #{condition}"
     end
   end
