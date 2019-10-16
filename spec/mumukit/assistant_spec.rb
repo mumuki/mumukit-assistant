@@ -9,12 +9,12 @@ describe Mumukit::Assistant do
     ]}
 
     context 'when submission has content' do
-      let(:submission) { struct content: 'something' }
+      let(:submission) { struct solution: 'something' }
       it { expect(assistant.assist_with submission).to eq [] }
     end
 
     context 'when submission has no content' do
-      let(:submission) { struct content: '' }
+      let(:submission) { struct solution: '' }
       it { expect(assistant.assist_with submission).to eq ['oops, please write something in the editor'] }
     end
   end
@@ -28,17 +28,17 @@ describe Mumukit::Assistant do
     ]}
 
     context 'when submission has content' do
-      let(:submission) { struct content: 'something' }
+      let(:submission) { struct solution: 'something' }
       it { expect(assistant.assist_with submission).to eq [] }
     end
 
     context 'when submission has no content' do
-      it { expect(assistant.assist_with(struct content: '', attemps_count: 1)).to eq ['message 1'] }
-      it { expect(assistant.assist_with(struct content: '', attemps_count: 3)).to eq ['message 1'] }
-      it { expect(assistant.assist_with(struct content: '', attemps_count: 4)).to eq ['message 2'] }
-      it { expect(assistant.assist_with(struct content: '', attemps_count: 6)).to eq ['message 2'] }
-      it { expect(assistant.assist_with(struct content: '', attemps_count: 7)).to eq ['message 3'] }
-      it { expect(assistant.assist_with(struct content: '', attemps_count: 10)).to eq ['message 3'] }
+      it { expect(assistant.assist_with(struct solution: '', attemps_count: 1)).to eq ['message 1'] }
+      it { expect(assistant.assist_with(struct solution: '', attemps_count: 3)).to eq ['message 1'] }
+      it { expect(assistant.assist_with(struct solution: '', attemps_count: 4)).to eq ['message 2'] }
+      it { expect(assistant.assist_with(struct solution: '', attemps_count: 6)).to eq ['message 2'] }
+      it { expect(assistant.assist_with(struct solution: '', attemps_count: 7)).to eq ['message 3'] }
+      it { expect(assistant.assist_with(struct solution: '', attemps_count: 10)).to eq ['message 3'] }
     end
   end
 
