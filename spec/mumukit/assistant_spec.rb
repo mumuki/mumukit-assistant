@@ -128,6 +128,40 @@ describe Mumukit::Assistant do
       it { expect(assistant.assist_with submission).to eq ['oops, failed!'] }
     end
 
+    context 'when given tests have failed, with trimming' do
+      let(:submission) {
+        struct status: :failed,
+               test_results: [
+                  {title: ' f -2 should return 1', status: :failed, result: '.'},
+                  {title: '  f -5 should return 1  ', status: :failed, result: '.'},
+                  {title: 'f -6 should return 1', status: :failed, result: '.'},
+               ]
+      }
+      it { expect(assistant.assist_with submission).to eq ['oops, failed!'] }
+    end
+
+    context 'when given tests have failed, with trimming in both rules and tests' do
+      let(:rules) {[
+        {
+          when: {
+            these_tests_failed: [
+              'f -2 should return 1  ',
+              ' f -5 should return 1']
+          },
+          then: 'oops, failed!'}
+      ]}
+
+      let(:submission) {
+        struct status: :failed,
+               test_results: [
+                  {title: ' f -2 should return 1', status: :failed, result: '.'},
+                  {title: '  f -5 should return 1  ', status: :failed, result: '.'},
+                  {title: 'f -6 should return 1', status: :failed, result: '.'},
+               ]
+      }
+      it { expect(assistant.assist_with submission).to eq ['oops, failed!'] }
+    end
+
     context 'when given tests have not failed' do
       let(:submission) {
         struct status: :failed,
