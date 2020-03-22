@@ -36,7 +36,7 @@ class Mumukit::Assistant::Narrator
   end
 
   def explanation_opening_paragraph(tip)
-    "#{tip.capitalize}."
+    "#{tip.upcase_first}."
   end
 
   def explanation_middle_paragraph(tip)
