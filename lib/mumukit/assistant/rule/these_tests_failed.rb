@@ -16,7 +16,7 @@ class Mumukit::Assistant::Rule::TheseTestsFailed < Mumukit::Assistant::Rule::Sub
   end
 
   def includes_failing_test?(title, submission)
-    failed_tests(submission).map { |it| it[:title] }.include?(title)
+    failed_tests(submission).map { |it| it[:title].strip }.include?(title.strip)
   end
 
   def failed_tests(submission)
