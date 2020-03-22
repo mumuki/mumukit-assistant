@@ -59,6 +59,16 @@ describe 'narrator' do
                                                             "Además, fijate que estés usando composición.\n\n" +
                                                             "¡Intentemos de nuevo!\n" }
       end
+
+      context '1 tip' do
+        let(:tips) { [
+          'recordá que `sum` debe funcionar tanto para `Int`s como `Float`s'
+        ] }
+
+        it { expect(narrator.compose_explanation tips).to eq "Parece que algo no funcionó :see_no_evil:.\n\n"+
+                                                             "Recordá que `sum` debe funcionar tanto para `Int`s como `Float`s.\n\n"+
+                                                             "¡Intentemos de nuevo!\n" }
+      end
     end
   end
 end
