@@ -8,6 +8,11 @@ describe Mumukit::Assistant do
       {when: :content_empty, then: 'oops, please write something in the editor'}
     ]}
 
+    context 'when submission has nil content' do
+      let(:submission) { struct solution: nil }
+      it { expect(assistant.assist_with submission).to eq ['oops, please write something in the editor'] }
+    end
+
     context 'when submission has content' do
       let(:submission) { struct solution: 'something' }
       it { expect(assistant.assist_with submission).to eq [] }
