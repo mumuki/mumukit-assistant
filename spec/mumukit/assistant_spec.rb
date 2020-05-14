@@ -22,6 +22,13 @@ describe Mumukit::Assistant do
       let(:submission) { struct solution: '' }
       it { expect(assistant.assist_with submission).to eq ['oops, please write something in the editor'] }
     end
+
+    context 'string keys' do
+      let(:rules) {[ {'when' => 'content_empty', 'then' => 'oops, please write something in the editor'} ]}
+      let(:submission) { struct solution: '' }
+
+      it { expect(assistant.assist_with submission).to eq ['oops, please write something in the editor'] }
+    end
   end
 
   describe 'content_empty with attemps_count' do
@@ -120,6 +127,30 @@ describe Mumukit::Assistant do
         },
         then: 'oops, failed!'}
     ]}
+
+
+    context 'sttring keys' do
+      let(:rules) {[
+        {
+          'when' => {
+            'these_tests_failed' => [
+              'f -2 should return 1',
+              'f -5 should return 1']
+          },
+          'then' => 'oops, failed!'}
+      ]}
+
+      let(:submission) {
+        struct status: :failed,
+               test_results: [
+                  {title: 'f -2 should return 1', status: :failed, result: '.'},
+                  {title: 'f -5 should return 1', status: :failed, result: '.'},
+                  {title: 'f -6 should return 1', status: :failed, result: '.'},
+               ]
+      }
+      it { expect(assistant.assist_with submission).to eq ['oops, failed!'] }
+    end
+
 
     context 'when given tests have failed' do
       let(:submission) {

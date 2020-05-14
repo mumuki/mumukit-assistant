@@ -17,11 +17,11 @@ class Mumukit::Assistant::Rule::TheseExpectationsFailed < Mumukit::Assistant::Ru
   end
 
   def failed_expectations(submission)
-    @failed_expectations ||= submission.expectation_results.select { |it| it[:result].failed? }
+    @failed_expectations ||= submission.expectation_results.select { |it| it.indifferent_get(:result).failed? }
   end
 
   def includes_failing_expectation?(humanized_expectation, submission)
     binding, inspection = humanized_expectation.split(' ')
-    failed_expectations(submission).any? { |it| it[:binding] == binding && it[:inspection] == inspection }
+    failed_expectations(submission).any? { |it| it.indifferent_get(:binding) == binding && it.indifferent_get(:inspection) == inspection }
   end
 end
