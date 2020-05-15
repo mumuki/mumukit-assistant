@@ -1,7 +1,7 @@
 module Mumukit::Assistant::Rule
   def self.parse(hash)
-    message = Mumukit::Assistant::Message.parse hash[:then]
-    w = hash[:when]
+    message = Mumukit::Assistant::Message.parse hash.indifferent_get(:then)
+    w = hash.indifferent_get(:when)
     if w.is_a? Hash
       parse_complex_when w.first, message
     else

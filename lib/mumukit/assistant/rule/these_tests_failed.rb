@@ -16,10 +16,10 @@ class Mumukit::Assistant::Rule::TheseTestsFailed < Mumukit::Assistant::Rule::Sub
   end
 
   def includes_failing_test?(title, submission)
-    failed_tests(submission).map { |it| it[:title].strip }.include?(title.strip)
+    failed_tests(submission).map { |it| it.indifferent_get(:title).strip }.include?(title.strip)
   end
 
   def failed_tests(submission)
-    @failed_tests ||= submission.test_results.select { |it| it[:status].failed? }
+    @failed_tests ||= submission.test_results.select { |it| it.indifferent_get(:status).failed? }
   end
 end
