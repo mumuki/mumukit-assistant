@@ -12,7 +12,7 @@ class Mumukit::Assistant::Narrator
   # Generated a markdown explanation using the seeded phrases. Uses `I18n` to get
   # the appropriate locale.
   def compose_explanation(tips)
-    "#{explanation_introduction_phrase}\n\n#{explanation_paragraphs(tips).join("\n\n")}\n\n#{retry_phrase}\n"
+    "**#{explanation_introduction_phrase}**\n\n#{explanation_paragraphs(tips).join("\n\n")}\n\n#{retry_phrase}\n"
   end
 
   # Generates an html explantion.
