@@ -22,7 +22,7 @@ describe 'narrator' do
 
       it { expect(narrator.retry_phrase).to eq 'Let\'s try again!' }
       it { expect(narrator.explanation_introduction_phrase).to eq 'Oops, it didn\'t work :frowning:.' }
-      it { expect(narrator.compose_explanation tips).to eq "Oops, it didn\'t work :frowning:.\n\n"+
+      it { expect(narrator.compose_explanation tips).to eq "**Oops, it didn\'t work :frowning:.**\n\n"+
                                                           "Check you have not mispelled `product`.\n\n"+
                                                           "Also, check that you are using composition.\n\n" +
                                                           "Finally, remember that `sum` must work with both `Int`s and `Float`s.\n\n" +
@@ -41,7 +41,7 @@ describe 'narrator' do
           'recordá que `sum` debe funcionar tanto para `Int`s como `Float`s'
         ] }
 
-        it { expect(narrator.compose_explanation tips).to eq "Parece que algo no funcionó :see_no_evil:.\n\n"+
+        it { expect(narrator.compose_explanation tips).to eq "**Parece que algo no funcionó :see_no_evil:.**\n\n"+
                                                             "Fijate que no hayas escrito mal `product`.\n\n"+
                                                             "Además, fijate que estés usando composición.\n\n" +
                                                             "Por último, recordá que `sum` debe funcionar tanto para `Int`s como `Float`s.\n\n" +
@@ -54,7 +54,7 @@ describe 'narrator' do
           'fijate que estés usando composición'
         ] }
 
-        it { expect(narrator.compose_explanation tips).to eq "Parece que algo no funcionó :see_no_evil:.\n\n"+
+        it { expect(narrator.compose_explanation tips).to eq "**Parece que algo no funcionó :see_no_evil:.**\n\n"+
                                                             "Fijate que no hayas escrito mal `product`.\n\n"+
                                                             "Además, fijate que estés usando composición.\n\n" +
                                                             "¡Intentemos de nuevo!\n" }
@@ -65,7 +65,7 @@ describe 'narrator' do
           'recordá que `sum` debe funcionar tanto para `Int`s como `Float`s'
         ] }
 
-        it { expect(narrator.compose_explanation tips).to eq "Parece que algo no funcionó :see_no_evil:.\n\n"+
+        it { expect(narrator.compose_explanation tips).to eq "**Parece que algo no funcionó :see_no_evil:.**\n\n"+
                                                              "Recordá que `sum` debe funcionar tanto para `Int`s como `Float`s.\n\n"+
                                                              "¡Intentemos de nuevo!\n" }
       end
