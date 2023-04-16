@@ -58,7 +58,7 @@ class Mumukit::Assistant::Narrator
   private
 
   def t(key, args={})
-    I18n.t "narrator.#{key}_#{@seed[key]}", args
+    I18n.t "narrator.#{key}_#{@seed[key]}", **args
   end
 
   def self.random_index
